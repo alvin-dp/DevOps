@@ -36,10 +36,17 @@ data "aws_ami" "centos" {
   }
   owners = ["679593333241"]
 }
+
+data "aws_security_group" "inet_to_ssh" {
+  name = "allow_ssh"  
+}
+
+
+
 resource "aws_instance" "web" {
   ami           = "${data.aws_ami.centos.id}"
   instance_type = "t2.micro"
-  security_groups = ["allow_ssh"]
+  security_groups = ["${data.aws_security_group.inet_to_ssh.name}"]
   key_name = "main_key"
   tags = {
     Name = "HelloWorld"
