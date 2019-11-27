@@ -51,16 +51,9 @@ resource "aws_instance" "web" {
     delete_on_termination = true
   }
 #  user_data = "yum update"
-#
-# provisioner "file" {
-#   source      = "script.sh"
-#   destination = "/tmp/script.sh"
-# }
-#
   provisioner "remote-exec" {
     inline = [
-      "sudo yum update >> /tmp/update_log",
-      "echo The server's IP address is ${self.private_ip}",
+      "sudo yum -y update",
      ]
     connection {
     type     = "ssh"
