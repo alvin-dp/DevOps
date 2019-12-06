@@ -71,16 +71,21 @@ resource "aws_instance" "web" {
   }
 #  user_data = "yum update"
 
-  provisioner "file" {
-    source      = var.path_to_nginx_conf
-    destination = "/tmp/nginx_default.conf"
-
-    connection {
+  connection {
     type     = "ssh"
     user     = "centos"
     private_key = file(var.path_to_key)
     host     = "${self.public_ip}"
     } 
+ 
+  provisioner "file" {
+    source      = var.path_to_nginx_conf
+    destination = "/tmp/nginx_default.conf"
+  }
+
+  provisioner "file" {
+    content = "${templatefile("nginx.conf.tpl", {server_name = "${self.public_ip}"})}"
+    destination = "/tmp/jenkins.conf"
   }
 
   provisioner "remote-exec" {
@@ -94,18 +99,16 @@ resource "aws_instance" "web" {
       "sudo yum -y install nginx",      
       "sudo yum -y install java-1.8.0-openjdk",
       "sudo yum -y install jenkins",
-      "sudo cp /tmp/nginx_default.conf /etc/nginx/conf.d/default.conf",
-      "sudo service jenkins start",
+#      "sudo cp /tmp/nginx_default.conf /etc/nginx/conf.d/default.conf",
+#      "sudo service jenkins start",
+#      "sudo systemctl start nginx",
+      "sudo cp /tmp/jenkins.conf /etc/nginx/conf.d/default.conf",
       "sudo systemctl start nginx",
+      "sudo service jenkins start",
      ]
-    connection {
-    type     = "ssh"
-    user     = "centos"
-    private_key = file(var.path_to_key)
-    host     = "${self.public_ip}"
-    }
   }
-  tags = {
+  
+ tags = {
     Name = "HelloWorld"
   }
 }
