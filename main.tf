@@ -10,6 +10,15 @@ variable "path_to_jenkins_repo" {
 variable "path_to_nginx_conf" {
   type = string
 }
+variable "path_to_rundeck_service" {
+  type = string
+}
+variable "path_to_jenkins_conf" {
+  type = string
+}
+variable "rundeck_version" {
+  type = string
+}
 
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_ssh"
@@ -60,6 +69,15 @@ data "aws_ami" "centos" {
 output "ip" {
   value = "${aws_instance.web.public_ip}"
 }
+output "ssh" {
+  value = "centos@${aws_instance.web.public_ip}"
+}
+output "link_to_jenkins" {
+  value = "http://${aws_instance.web.public_dns}/jenkins"
+}
+output "link_to_rundeck" {
+  value = "http://${aws_instance.web.public_dns}/rundeck"
+}
 
 resource "aws_instance" "web" {
   ami           = "${data.aws_ami.centos.id}"
@@ -79,32 +97,43 @@ resource "aws_instance" "web" {
     } 
  
   provisioner "file" {
-    source      = var.path_to_nginx_conf
-    destination = "/tmp/nginx_default.conf"
+    content = "${templatefile(var.path_to_nginx_conf, {server_name = "${self.public_ip}",internal_dns_name = "${self.private_dns}"})}"
+    destination = "/tmp/nginx.conf"
   }
+  provisioner "file" {
+    content = "${templatefile(var.path_to_rundeck_service, {rundeck_args = "-Dserver.contextPath=/rundeck",rundeck_version = var.rundeck_version})}"    
+    destination = "/tmp/rundeck.service"
+  }  
 
   provisioner "file" {
-    content = "${templatefile("nginx.conf.tpl", {server_name = "${self.public_ip}"})}"
+    content = "${templatefile(var.path_to_jenkins_conf, {jenkins_args = "--prefix=/jenkins"})}"
     destination = "/tmp/jenkins.conf"
   }
 
   provisioner "remote-exec" {
     inline = [
       "sudo setenforce 0",
+      "sudo yum -y install wget",      
       "echo '${file(var.path_to_ngix_repo)}' > /tmp/nginx.repo",
       "sudo cp /tmp/nginx.repo /etc/yum.repos.d/nginx.repo",
       "echo '${file(var.path_to_jenkins_repo)}' >/tmp/jenkins.repo",
       "sudo cp /tmp/jenkins.repo /etc/yum.repos.d/jenkins.repo",
       "sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key",
-      "sudo yum -y install nginx",      
+      "sudo yum -y install nginx",            
       "sudo yum -y install java-1.8.0-openjdk",
       "sudo yum -y install jenkins",
-#      "sudo cp /tmp/nginx_default.conf /etc/nginx/conf.d/default.conf",
-#      "sudo service jenkins start",
-#      "sudo systemctl start nginx",
-      "sudo cp /tmp/jenkins.conf /etc/nginx/conf.d/default.conf",
+      "sudo cp /tmp/nginx.conf /etc/nginx/conf.d/default.conf",
+      "mkdir ~/rundeck",
+      "cd ~/rundeck/",
+      "wget https://dl.bintray.com/rundeck/rundeck-maven/rundeck-'${var.rundeck_version}'.war",
+      "sudo mkdir /opt/rundeck",
+      "sudo cp ~/rundeck/* /opt/rundeck/",
+      "rm -r ~/rundeck",
+      "sudo cp /tmp/rundeck.service /etc/systemd/system/",
+      "sudo systemctl start rundeck",
+      "sudo cp /tmp/jenkins.conf /etc/sysconfig/jenkins",
+      "sudo systemctl start jenkins",      
       "sudo systemctl start nginx",
-      "sudo service jenkins start",
      ]
   }
   
