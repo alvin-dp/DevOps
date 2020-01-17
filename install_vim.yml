@@ -1,0 +1,13 @@
+---
+- hosts: eu-west-1
+  become: yes
+  become_method: sudo  
+  tasks:
+  - name: install vim
+    yum:
+      name: vim
+      state: latest
+  - name: install nano
+    yum:
+      name: nano
+      state: latest      
