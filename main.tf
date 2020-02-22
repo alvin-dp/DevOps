@@ -101,7 +101,7 @@ resource "aws_instance" "web" {
     destination = "/tmp/nginx.conf"
   }
   provisioner "file" {
-    content = "${templatefile(var.path_to_rundeck_service, {rundeck_args = "-Dserver.contextPath=/rundeck",rundeck_version = var.rundeck_version})}"    
+    content = "${templatefile(var.path_to_rundeck_service, {rundeck_args = "-Dserver.contextPath=/rundeck  -Dgrails.serverURL=${self.private_dns}/rundeck",rundeck_version = var.rundeck_version})}"    
     destination = "/tmp/rundeck.service"
   }  
 
@@ -138,6 +138,6 @@ resource "aws_instance" "web" {
   }
   
  tags = {
-    Name = "HelloWorld"
+    Name = "HelloWorld_v2"
   }
 }
