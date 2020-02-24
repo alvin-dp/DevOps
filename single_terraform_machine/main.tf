@@ -138,6 +138,6 @@ resource "aws_instance" "web" {
   }
   
  tags = {
-    Name = "HelloWorld_v23"
+    Name = "HelloWorld"
   }
 }
