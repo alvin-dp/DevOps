@@ -1,4 +1,4 @@
-FROM jenkins/slave
+FROM jenkins/jnlp-slave
 # if we want to install via apt
 USER root
 # terraform version
