@@ -1,0 +1,377 @@
+17:15:25  Started by an SCM change
+17:15:25  Running as SYSTEM
+17:15:26  Building remotely on Docker-000089ilrzj4x on docker (dockerslave) in workspace /home/jenkins/workspace/terraform job2
+17:15:26  [WS-CLEANUP] Deleting project workspace...
+17:15:26  [WS-CLEANUP] Deferred wipeout is used...
+17:15:33  using credential git_devops
+17:15:33  Cloning the remote Git repository
+17:15:33  Cloning repository git@github.com:alvin-dp/DevOps.git
+17:15:33   > git init /home/jenkins/workspace/terraform job2 # timeout=10
+17:15:33  Fetching upstream changes from git@github.com:alvin-dp/DevOps.git
+17:15:33   > git --version # timeout=10
+17:15:33  using GIT_SSH to set credentials github ssh key
+17:15:33   > git fetch --tags --progress -- git@github.com:alvin-dp/DevOps.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+17:15:36   > git config remote.origin.url git@github.com:alvin-dp/DevOps.git # timeout=10
+17:15:36   > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+17:15:36   > git config remote.origin.url git@github.com:alvin-dp/DevOps.git # timeout=10
+17:15:36  Fetching upstream changes from git@github.com:alvin-dp/DevOps.git
+17:15:36  using GIT_SSH to set credentials github ssh key
+17:15:36   > git fetch --tags --progress -- git@github.com:alvin-dp/DevOps.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+17:15:38   > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+17:15:38   > git rev-parse refs/remotes/origin/origin/master^{commit} # timeout=10
+17:15:38  Checking out Revision 8d4dc8afb8edf87dd81728a94acefba98f0e602a (refs/remotes/origin/master)
+17:15:38   > git config core.sparsecheckout # timeout=10
+17:15:38   > git checkout -f 8d4dc8afb8edf87dd81728a94acefba98f0e602a # timeout=10
+17:15:43  Commit message: "Edit vars"
+17:15:43   > git rev-list --no-walk 29b1f1d132e396b98385b41bd1d45bbe41645916 # timeout=10
+17:15:43  [terraform job2] $ /bin/sh -xe /tmp/jenkins8310341130664981386.sh
+17:15:43  + cd single_terraform_machine
+17:15:43  + ls -la
+17:15:43  total 24
+17:15:43  drwxr-xr-x 2 jenkins jenkins 4096 Feb 25 15:15 .
+17:15:43  drwxr-xr-x 8 jenkins jenkins 4096 Feb 25 15:15 ..
+17:15:43  -rw-r--r-- 1 jenkins jenkins  126 Feb 25 15:15 backend.tf
+17:15:43  -rw-r--r-- 1 jenkins jenkins 3651 Feb 25 15:15 main.tf
+17:15:43  -rw-r--r-- 1 jenkins jenkins  181 Feb 25 15:15 provider.tf
+17:15:43  -rw-r--r-- 1 jenkins jenkins  410 Feb 25 15:15 terraform.tfvars
+17:15:43  + terraform init
+17:15:43  
+17:15:43  [0m[1mInitializing the backend...[0m
+17:15:46  [0m[32m
+17:15:46  Successfully configured the backend "s3"! Terraform will automatically
+17:15:46  use this backend unless the backend configuration changes.[0m
+17:15:47  
+17:15:47  [0m[1mInitializing provider plugins...[0m
+17:15:47  - Checking for available provider plugins...
+17:15:48  - Downloading plugin for provider "aws" (hashicorp/aws) 2.50.0...
+17:16:05  
+17:16:05  The following providers do not have any version constraints in configuration,
+17:16:05  so the latest version was installed.
+17:16:05  
+17:16:05  To prevent automatic upgrades to new major versions that may contain breaking
+17:16:05  changes, it is recommended to add version = "..." constraints to the
+17:16:05  corresponding provider blocks in configuration, with the constraint strings
+17:16:05  suggested below.
+17:16:05  
+17:16:05  * provider.aws: version = "~> 2.50"
+17:16:05  
+17:16:05  [0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+17:16:05  [0m[32m
+17:16:05  You may now begin working with Terraform. Try running "terraform plan" to see
+17:16:05  any changes that are required for your infrastructure. All Terraform commands
+17:16:05  should now work.
+17:16:05  
+17:16:05  If you ever set or change modules or backend configuration for Terraform,
+17:16:05  rerun this command to reinitialize your working directory. If you forget, other
+17:16:05  commands will detect it and remind you to do so if necessary.[0m
+17:16:05  + terraform plan
+17:16:07  [33m
+17:16:07  [1m[33mWarning: [0m[0m[1mInterpolation-only expressions are deprecated[0m
+17:16:07  
+17:16:07  [0m  on main.tf line 83, in resource "aws_instance" "web":
+17:16:07    83:   ami           = [4m"${data.aws_ami.centos.id}"[0m
+17:16:07  [0m
+17:16:07  Terraform 0.11 and earlier required all non-constant expressions to be
+17:16:07  provided via interpolation syntax, but this pattern is now deprecated. To
+17:16:07  silence this warning, remove the "${ sequence from the start and the }"
+17:16:07  sequence from the end of this expression, leaving just the inner expression.
+17:16:07  
+17:16:07  Template interpolation syntax is still used to construct strings from
+17:16:07  expressions when the template includes multiple interpolation sequences or a
+17:16:07  mixture of literal strings and interpolations. This deprecation applies only
+17:16:07  to templates that consist entirely of a single interpolation sequence.
+17:16:07  [0m[0m
+17:16:07  [33m
+17:16:07  [1m[33mWarning: [0m[0m[1mInterpolation-only expressions are deprecated[0m
+17:16:07  
+17:16:07  [0m  on main.tf line 96, in resource "aws_instance" "web":
+17:16:07    96:     host     = [4m"${self.public_ip}"[0m
+17:16:07  [0m
+17:16:07  Terraform 0.11 and earlier required all non-constant expressions to be
+17:16:07  provided via interpolation syntax, but this pattern is now deprecated. To
+17:16:07  silence this warning, remove the "${ sequence from the start and the }"
+17:16:07  sequence from the end of this expression, leaving just the inner expression.
+17:16:07  
+17:16:07  Template interpolation syntax is still used to construct strings from
+17:16:07  expressions when the template includes multiple interpolation sequences or a
+17:16:07  mixture of literal strings and interpolations. This deprecation applies only
+17:16:07  to templates that consist entirely of a single interpolation sequence.
+17:16:07  [0m[0m
+17:16:07  [33m
+17:16:07  [1m[33mWarning: [0m[0m[1mInterpolation-only expressions are deprecated[0m
+17:16:07  
+17:16:07  [0m  on main.tf line 100, in resource "aws_instance" "web":
+17:16:07   100:     content = [4m"${templatefile(var.path_to_nginx_conf, {server_name = "${self.public_ip}",internal_dns_name = "${self.private_dns}"})}"[0m
+17:16:07  [0m
+17:16:07  Terraform 0.11 and earlier required all non-constant expressions to be
+17:16:07  provided via interpolation syntax, but this pattern is now deprecated. To
+17:16:07  silence this warning, remove the "${ sequence from the start and the }"
+17:16:07  sequence from the end of this expression, leaving just the inner expression.
+17:16:07  
+17:16:07  Template interpolation syntax is still used to construct strings from
+17:16:07  expressions when the template includes multiple interpolation sequences or a
+17:16:07  mixture of literal strings and interpolations. This deprecation applies only
+17:16:07  to templates that consist entirely of a single interpolation sequence.
+17:16:07  [0m[0m
+17:16:07  [33m
+17:16:07  [1m[33mWarning: [0m[0m[1mInterpolation-only expressions are deprecated[0m
+17:16:07  
+17:16:07  [0m  on main.tf line 104, in resource "aws_instance" "web":
+17:16:07   104:     content = [4m"${templatefile(var.path_to_rundeck_service, {rundeck_args = "-Dserver.contextPath=/rundeck  -Dgrails.serverURL=${self.private_dns}/rundeck",rundeck_version = var.rundeck_version})}"[0m    
+17:16:07  [0m
+17:16:07  Terraform 0.11 and earlier required all non-constant expressions to be
+17:16:07  provided via interpolation syntax, but this pattern is now deprecated. To
+17:16:07  silence this warning, remove the "${ sequence from the start and the }"
+17:16:07  sequence from the end of this expression, leaving just the inner expression.
+17:16:07  
+17:16:07  Template interpolation syntax is still used to construct strings from
+17:16:07  expressions when the template includes multiple interpolation sequences or a
+17:16:07  mixture of literal strings and interpolations. This deprecation applies only
+17:16:07  to templates that consist entirely of a single interpolation sequence.
+17:16:07  [0m[0m
+17:16:07  [33m
+17:16:07  [1m[33mWarning: [0m[0m[1mInterpolation-only expressions are deprecated[0m
+17:16:07  
+17:16:07  [0m  on main.tf line 109, in resource "aws_instance" "web":
+17:16:07   109:     content = [4m"${templatefile(var.path_to_jenkins_conf, {jenkins_args = "--prefix=/jenkins"})}"[0m
+17:16:07  [0m
+17:16:07  Terraform 0.11 and earlier required all non-constant expressions to be
+17:16:07  provided via interpolation syntax, but this pattern is now deprecated. To
+17:16:07  silence this warning, remove the "${ sequence from the start and the }"
+17:16:07  sequence from the end of this expression, leaving just the inner expression.
+17:16:07  
+17:16:07  Template interpolation syntax is still used to construct strings from
+17:16:08  expressions when the template includes multiple interpolation sequences or a
+17:16:08  mixture of literal strings and interpolations. This deprecation applies only
+17:16:08  to templates that consist entirely of a single interpolation sequence.
+17:16:08  [0m[0m
+17:16:11  [0m[1mRefreshing Terraform state in-memory prior to plan...[0m
+17:16:11  The refreshed state will be used to calculate this plan, but will not be
+17:16:11  persisted to local or remote state storage.
+17:16:11  [0m
+17:16:16  [0m[1mdata.aws_ami.centos: Refreshing state...[0m
+17:16:16  
+17:16:16  ------------------------------------------------------------------------
+17:16:19  
+17:16:19  An execution plan has been generated and is shown below.
+17:16:19  Resource actions are indicated with the following symbols:
+17:16:19    [32m+[0m create
+17:16:19  [0m
+17:16:19  Terraform will perform the following actions:
+17:16:19  
+17:16:19  [1m  # aws_instance.web[0m will be created[0m[0m
+17:16:19  [0m[32m  +[0m [0mresource "aws_instance" "web" {
+17:16:19        [32m+[0m [0m[1m[0mami[0m[0m                          = "ami-0cc2ed469cc085bb0"
+17:16:19        [32m+[0m [0m[1m[0marn[0m[0m                          = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0massociate_public_ip_address[0m[0m  = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mavailability_zone[0m[0m            = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mcpu_core_count[0m[0m               = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mcpu_threads_per_core[0m[0m         = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mget_password_data[0m[0m            = false
+17:16:19        [32m+[0m [0m[1m[0mhost_id[0m[0m                      = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mid[0m[0m                           = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0minstance_state[0m[0m               = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0minstance_type[0m[0m                = "t2.micro"
+17:16:19        [32m+[0m [0m[1m[0mipv6_address_count[0m[0m           = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mipv6_addresses[0m[0m               = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mkey_name[0m[0m                     = "main_key"
+17:16:19        [32m+[0m [0m[1m[0mnetwork_interface_id[0m[0m         = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mpassword_data[0m[0m                = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mplacement_group[0m[0m              = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mprimary_network_interface_id[0m[0m = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mprivate_dns[0m[0m                  = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mprivate_ip[0m[0m                   = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mpublic_dns[0m[0m                   = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mpublic_ip[0m[0m                    = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0msecurity_groups[0m[0m              = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0msource_dest_check[0m[0m            = true
+17:16:19        [32m+[0m [0m[1m[0msubnet_id[0m[0m                    = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mtags[0m[0m                         = {
+17:16:19            [32m+[0m [0m"Name"    = "HelloWorld"
+17:16:19            [32m+[0m [0m"backend" = "s3"
+17:16:19          }
+17:16:19        [32m+[0m [0m[1m[0mtenancy[0m[0m                      = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mvolume_tags[0m[0m                  = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mvpc_security_group_ids[0m[0m       = (known after apply)
+17:16:19  
+17:16:19        [32m+[0m [0mebs_block_device {
+17:16:19            [32m+[0m [0m[1m[0mdelete_on_termination[0m[0m = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0mdevice_name[0m[0m           = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0mencrypted[0m[0m             = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0miops[0m[0m                  = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0mkms_key_id[0m[0m            = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0msnapshot_id[0m[0m           = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0mvolume_id[0m[0m             = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0mvolume_size[0m[0m           = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0mvolume_type[0m[0m           = (known after apply)
+17:16:19          }
+17:16:19  
+17:16:19        [32m+[0m [0mephemeral_block_device {
+17:16:19            [32m+[0m [0m[1m[0mdevice_name[0m[0m  = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0mno_device[0m[0m    = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0mvirtual_name[0m[0m = (known after apply)
+17:16:19          }
+17:16:19  
+17:16:19        [32m+[0m [0mnetwork_interface {
+17:16:19            [32m+[0m [0m[1m[0mdelete_on_termination[0m[0m = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0mdevice_index[0m[0m          = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0mnetwork_interface_id[0m[0m  = (known after apply)
+17:16:19          }
+17:16:19  
+17:16:19        [32m+[0m [0mroot_block_device {
+17:16:19            [32m+[0m [0m[1m[0mdelete_on_termination[0m[0m = true
+17:16:19            [32m+[0m [0m[1m[0mencrypted[0m[0m             = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0miops[0m[0m                  = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0mkms_key_id[0m[0m            = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0mvolume_id[0m[0m             = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0mvolume_size[0m[0m           = (known after apply)
+17:16:19            [32m+[0m [0m[1m[0mvolume_type[0m[0m           = (known after apply)
+17:16:19          }
+17:16:19      }
+17:16:19  
+17:16:19  [1m  # aws_security_group.allow_ssh[0m will be created[0m[0m
+17:16:19  [0m[32m  +[0m [0mresource "aws_security_group" "allow_ssh" {
+17:16:19        [32m+[0m [0m[1m[0marn[0m[0m                    = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mdescription[0m[0m            = "Allow ssh inbound traffic"
+17:16:19        [32m+[0m [0m[1m[0megress[0m[0m                 = [
+17:16:19            [32m+[0m [0m{
+17:16:19                [32m+[0m [0mcidr_blocks      = [
+17:16:19                    [32m+[0m [0m"0.0.0.0/0",
+17:16:19                  ]
+17:16:19                [32m+[0m [0mdescription      = ""
+17:16:19                [32m+[0m [0mfrom_port        = 0
+17:16:19                [32m+[0m [0mipv6_cidr_blocks = []
+17:16:19                [32m+[0m [0mprefix_list_ids  = []
+17:16:19                [32m+[0m [0mprotocol         = "-1"
+17:16:19                [32m+[0m [0msecurity_groups  = []
+17:16:19                [32m+[0m [0mself             = false
+17:16:19                [32m+[0m [0mto_port          = 0
+17:16:19              },
+17:16:19          ]
+17:16:19        [32m+[0m [0m[1m[0mid[0m[0m                     = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mingress[0m[0m                = [
+17:16:19            [32m+[0m [0m{
+17:16:19                [32m+[0m [0mcidr_blocks      = [
+17:16:19                    [32m+[0m [0m"0.0.0.0/0",
+17:16:19                  ]
+17:16:19                [32m+[0m [0mdescription      = ""
+17:16:19                [32m+[0m [0mfrom_port        = 22
+17:16:19                [32m+[0m [0mipv6_cidr_blocks = []
+17:16:19                [32m+[0m [0mprefix_list_ids  = []
+17:16:19                [32m+[0m [0mprotocol         = "tcp"
+17:16:19                [32m+[0m [0msecurity_groups  = []
+17:16:19                [32m+[0m [0mself             = false
+17:16:19                [32m+[0m [0mto_port          = 22
+17:16:19              },
+17:16:19            [32m+[0m [0m{
+17:16:19                [32m+[0m [0mcidr_blocks      = [
+17:16:19                    [32m+[0m [0m"0.0.0.0/0",
+17:16:19                  ]
+17:16:19                [32m+[0m [0mdescription      = ""
+17:16:19                [32m+[0m [0mfrom_port        = 80
+17:16:19                [32m+[0m [0mipv6_cidr_blocks = []
+17:16:19                [32m+[0m [0mprefix_list_ids  = []
+17:16:19                [32m+[0m [0mprotocol         = "tcp"
+17:16:19                [32m+[0m [0msecurity_groups  = []
+17:16:19                [32m+[0m [0mself             = false
+17:16:19                [32m+[0m [0mto_port          = 80
+17:16:19              },
+17:16:19          ]
+17:16:19        [32m+[0m [0m[1m[0mname[0m[0m                   = "allow_ssh"
+17:16:19        [32m+[0m [0m[1m[0mowner_id[0m[0m               = (known after apply)
+17:16:19        [32m+[0m [0m[1m[0mrevoke_rules_on_delete[0m[0m = false
+17:16:19        [32m+[0m [0m[1m[0mtags[0m[0m                   = {
+17:16:19            [32m+[0m [0m"Name" = "allow_all_to_ssh"
+17:16:19          }
+17:16:19        [32m+[0m [0m[1m[0mvpc_id[0m[0m                 = (known after apply)
+17:16:19      }
+17:16:19  
+17:16:19  [0m[1mPlan:[0m 2 to add, 0 to change, 0 to destroy.[0m
+17:16:19  [33m
+17:16:19  [1m[33mWarning: [0m[0m[1mInterpolation-only expressions are deprecated[0m
+17:16:19  
+17:16:19  [0m  on main.tf line 83, in resource "aws_instance" "web":
+17:16:19    83:   ami           = [4m"${data.aws_ami.centos.id}"[0m
+17:16:19  [0m
+17:16:19  Terraform 0.11 and earlier required all non-constant expressions to be
+17:16:19  provided via interpolation syntax, but this pattern is now deprecated. To
+17:16:19  silence this warning, remove the "${ sequence from the start and the }"
+17:16:19  sequence from the end of this expression, leaving just the inner expression.
+17:16:19  
+17:16:19  Template interpolation syntax is still used to construct strings from
+17:16:19  expressions when the template includes multiple interpolation sequences or a
+17:16:19  mixture of literal strings and interpolations. This deprecation applies only
+17:16:19  to templates that consist entirely of a single interpolation sequence.
+17:16:19  [0m[0m
+17:16:19  [33m
+17:16:19  [1m[33mWarning: [0m[0m[1mInterpolation-only expressions are deprecated[0m
+17:16:19  
+17:16:19  [0m  on main.tf line 96, in resource "aws_instance" "web":
+17:16:19    96:     host     = [4m"${self.public_ip}"[0m
+17:16:19  [0m
+17:16:19  Terraform 0.11 and earlier required all non-constant expressions to be
+17:16:19  provided via interpolation syntax, but this pattern is now deprecated. To
+17:16:19  silence this warning, remove the "${ sequence from the start and the }"
+17:16:19  sequence from the end of this expression, leaving just the inner expression.
+17:16:19  
+17:16:19  Template interpolation syntax is still used to construct strings from
+17:16:19  expressions when the template includes multiple interpolation sequences or a
+17:16:19  mixture of literal strings and interpolations. This deprecation applies only
+17:16:19  to templates that consist entirely of a single interpolation sequence.
+17:16:19  [0m[0m
+17:16:19  [33m
+17:16:19  [1m[33mWarning: [0m[0m[1mInterpolation-only expressions are deprecated[0m
+17:16:19  
+17:16:19  [0m  on main.tf line 100, in resource "aws_instance" "web":
+17:16:19   100:     content = [4m"${templatefile(var.path_to_nginx_conf, {server_name = "${self.public_ip}",internal_dns_name = "${self.private_dns}"})}"[0m
+17:16:19  [0m
+17:16:19  Terraform 0.11 and earlier required all non-constant expressions to be
+17:16:19  provided via interpolation syntax, but this pattern is now deprecated. To
+17:16:19  silence this warning, remove the "${ sequence from the start and the }"
+17:16:19  sequence from the end of this expression, leaving just the inner expression.
+17:16:19  
+17:16:19  Template interpolation syntax is still used to construct strings from
+17:16:19  expressions when the template includes multiple interpolation sequences or a
+17:16:19  mixture of literal strings and interpolations. This deprecation applies only
+17:16:19  to templates that consist entirely of a single interpolation sequence.
+17:16:19  [0m[0m
+17:16:19  [33m
+17:16:19  [1m[33mWarning: [0m[0m[1mInterpolation-only expressions are deprecated[0m
+17:16:19  
+17:16:19  [0m  on main.tf line 104, in resource "aws_instance" "web":
+17:16:19   104:     content = [4m"${templatefile(var.path_to_rundeck_service, {rundeck_args = "-Dserver.contextPath=/rundeck  -Dgrails.serverURL=${self.private_dns}/rundeck",rundeck_version = var.rundeck_version})}"[0m    
+17:16:19  [0m
+17:16:19  Terraform 0.11 and earlier required all non-constant expressions to be
+17:16:19  provided via interpolation syntax, but this pattern is now deprecated. To
+17:16:19  silence this warning, remove the "${ sequence from the start and the }"
+17:16:19  sequence from the end of this expression, leaving just the inner expression.
+17:16:19  
+17:16:19  Template interpolation syntax is still used to construct strings from
+17:16:19  expressions when the template includes multiple interpolation sequences or a
+17:16:19  mixture of literal strings and interpolations. This deprecation applies only
+17:16:19  to templates that consist entirely of a single interpolation sequence.
+17:16:19  [0m[0m
+17:16:19  [33m
+17:16:19  [1m[33mWarning: [0m[0m[1mInterpolation-only expressions are deprecated[0m
+17:16:19  
+17:16:19  [0m  on main.tf line 109, in resource "aws_instance" "web":
+17:16:19   109:     content = [4m"${templatefile(var.path_to_jenkins_conf, {jenkins_args = "--prefix=/jenkins"})}"[0m
+17:16:19  [0m
+17:16:19  Terraform 0.11 and earlier required all non-constant expressions to be
+17:16:19  provided via interpolation syntax, but this pattern is now deprecated. To
+17:16:19  silence this warning, remove the "${ sequence from the start and the }"
+17:16:19  sequence from the end of this expression, leaving just the inner expression.
+17:16:19  
+17:16:19  Template interpolation syntax is still used to construct strings from
+17:16:19  expressions when the template includes multiple interpolation sequences or a
+17:16:19  mixture of literal strings and interpolations. This deprecation applies only
+17:16:19  to templates that consist entirely of a single interpolation sequence.
+17:16:19  [0m[0m
+17:16:19  
+17:16:19  ------------------------------------------------------------------------
+17:16:19  
+17:16:19  Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+17:16:19  can't guarantee that exactly these actions will be performed if
+17:16:19  "terraform apply" is subsequently run.
+17:16:19  
+17:16:22  Finished: SUCCESS
