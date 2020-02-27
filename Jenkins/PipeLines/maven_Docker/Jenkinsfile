@@ -1,6 +1,10 @@
 #!/usr/bin/env groovy
 node{
-    label 'maven'
+    docker {
+        image 'maven:3-alpine'
+        label 'my-maven'
+        args '-v /var/tmp/.m2:/root/.m2'
+    }
     stage('Get app from Repo') {
             git credentialsId: 'git_devops', url: 'git@github.com:alvin-dp/simple-java-maven-app.git'
     }
