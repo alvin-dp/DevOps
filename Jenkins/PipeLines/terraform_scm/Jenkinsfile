@@ -13,11 +13,13 @@ node {
     }
     stage('list Local Repo'){
         sh 'ls -la'
-    }    
+    }   
+    stage('list Local Repo'){               
+        sh 'cd single_terraform_machine' 
+    }
     stage('terraform init&plan'){
         withCredentials([string(credentialsId: 'a38c6528-d489-41e7-865b-8cb175ec5f8a', variable: 'AWS_ACCESS_KEY_ID'),
             string(credentialsId: 'f0377c4e-46f2-400f-b3cd-f3f6bbdeae7a', variable: 'AWS_SECRET_ACCESS_KEY')]) {
-            sh 'cd single_terraform_machine'
             sh 'terraform init'
             sh 'terraform plan'
             }
