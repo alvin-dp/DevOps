@@ -1,22 +1,13 @@
-pipeline {
-    agent {
-        label 'maven'
-        stages {
-            stage('Get app from Repo') {
-                steps {
-                   git credentialsId: 'git_devops', url: 'git@github.com:alvin-dp/simple-java-maven-app.git'
-                }
-            }
-            stage('list WorkDir') {
-                steps {
-                   sh 'ls -la'
-                }
-            }                         
-            stage('Build') { 
-                steps {
-                    sh 'mvn -B -DskipTests clean package' 
-                }
-            }
-        }        
+#!/usr/bin/env groovy
+node{
+    label 'maven'
+    stage('Get app from Repo') {
+            git credentialsId: 'git_devops', url: 'git@github.com:alvin-dp/simple-java-maven-app.git'
+    }
+    stage('list WorkDir') {
+            sh 'ls -la'
+    }                         
+    stage('Build') { 
+            sh 'mvn -B -DskipTests clean package' 
     }
 }
