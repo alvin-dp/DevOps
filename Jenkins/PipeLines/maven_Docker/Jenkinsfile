@@ -1,0 +1,25 @@
+pipeline {
+    agent {
+        docker {
+            args '-v /home/vinny/.m2:/root/.m2'
+            image 'maven:3-alpine'
+        }
+        stages {
+            stage('Get app from Repo') {
+                steps {
+                   git credentialsId: 'git_devops', url: 'git@github.com:alvin-dp/simple-java-maven-app.git'
+                }
+            }
+            stage('list WorkDir') {
+                steps {
+                   sh 'ls -la'
+                }
+            }                         
+            stage('Build') { 
+                steps {
+                    sh 'mvn -B -DskipTests clean package' 
+                }
+            }
+        }        
+    }
+}
