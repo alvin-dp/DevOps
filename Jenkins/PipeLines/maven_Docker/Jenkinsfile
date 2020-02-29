@@ -60,7 +60,7 @@ node('dockerslave1'){
     }
     stage('Buiuld Docker'){
         withEnv(["PATH=${env.PATH}:${tool name: 'tool_docker'}/bin"]){        
-            sh "docker build --no-cache --build-arg APP_NAME=${appname} --build-arg APP_VERSION=${appversion} -t myappdocker ."
+            sh "docker build --no-cache --build-arg APP_NAME=${appname} --build-arg APP_VERSION=${appversion} -t alvindpdevops/mavenappdocker ."
         }
 
     }        
