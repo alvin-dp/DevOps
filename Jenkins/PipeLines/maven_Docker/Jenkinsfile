@@ -1,17 +1,28 @@
 #!/usr/bin/env groovy
 node{
-    docker {
-        image 'maven:3-alpine'
-        label 'my-maven'
-        args '-v /var/tmp/.m2:/root/.m2'
-    }
+    any
+    
     stage('Get app from Repo') {
             git credentialsId: 'git_devops', url: 'git@github.com:alvin-dp/simple-java-maven-app.git'
+
     }
     stage('list WorkDir') {
             sh 'ls -la'
     }                         
     stage('Build') { 
-            sh 'mvn -B -DskipTests clean package' 
+        withMaven(
+                // Maven installation declared in the Jenkins "Global Tool Configuration"
+                maven: 'maven',
+                // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
+                // We recommend to define Maven settings.xml globally at the folder level using 
+                // navigating to the folder configuration in the section "Pipeline Maven Configuration / Override global Maven configuration"
+                // or globally to the entire master navigating to  "Manage Jenkins / Global Tools Configuration"
+                //mavenSettingsConfig: 'my-maven-settings'
+                ) {
+
+        // Run the maven build
+        sh "mvn clean verify"
+        }             
+        //    sh 'mvn -B -DskipTests clean package' 
     }
 }
