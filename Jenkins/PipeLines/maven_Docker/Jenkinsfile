@@ -1,5 +1,5 @@
-def appversion=""
-def appname=""
+def appversion="my-app"
+def appname="1.0-SNAPSHOT"
 
 node('dockerslaveTF'){
     tool name: 'maven', type: 'maven'
@@ -46,23 +46,23 @@ node('dockerslave1'){
         sh 'docker -v'
         }
     } 
-    stage('unstash for deploy') {
-        unstash 'artiApp'
-        // withEnv(["PATH=${env.PATH}:${tool 'tool_docker'}/bin"]){
-        // sh 'docker -v'
-        // }
-        sh 'ls -la'
-        withEnv(["PATH=${env.PATH}:${tool 'tool_docker'}/bin"]){
-        sh 'docker ps -a'
-        }        
-    } 
     stage('test connect to Docker host') {    
         withEnv(["PATH=${env.PATH}:${tool 'tool_docker'}/bin"]){
             sh 'docker ps -a'
         } 
     }
     stage('Get Dockerfile from Repo') {
-            git credentialsId: 'git_devops', url: 'git@github.com:alvin-dp/simple-java-maven-app.git'
+            git credentialsId: 'git_devops', url: 'git@github.com:alvin-dp/MavenDocker.git'
+            sh 'ls -la'
     }
+    stage('unstash for deploy') {
+        unstash 'artiApp'
+    }
+    stage('Buiuld Docker'){
+        withEnv(["PATH=${env.PATH}:${tool name: 'tool_docker'}/bin"]){        
+            sh "docker build --no-cache --build-arg APP_NAME=${appname} --build-arg APP_VERSION=${appversion} -t myappdocker ."
+        }
+
+    }        
     
 }
