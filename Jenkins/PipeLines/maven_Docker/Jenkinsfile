@@ -1,28 +1,42 @@
-#!/usr/bin/env groovy
-node{
-    any
-    
+node('dockerslaveTF'){
+    tool name: 'maven', type: 'maven'
+    stage('test install') {
+        withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
+            sh 'env | grep PATH'
+            sh 'mvn -v'
+    }
+    }
     stage('Get app from Repo') {
             git credentialsId: 'git_devops', url: 'git@github.com:alvin-dp/simple-java-maven-app.git'
-
     }
     stage('list WorkDir') {
             sh 'ls -la'
     }                         
-    stage('Build') { 
-        withMaven(
-                // Maven installation declared in the Jenkins "Global Tool Configuration"
-                maven: 'maven',
-                // Maven settings.xml file defined with the Jenkins Config File Provider Plugin
-                // We recommend to define Maven settings.xml globally at the folder level using 
-                // navigating to the folder configuration in the section "Pipeline Maven Configuration / Override global Maven configuration"
-                // or globally to the entire master navigating to  "Manage Jenkins / Global Tools Configuration"
-                //mavenSettingsConfig: 'my-maven-settings'
-                ) {
-
-        // Run the maven build
-        sh "mvn clean verify"
-        }             
-        //    sh 'mvn -B -DskipTests clean package' 
-    }
+    stage('Build') {
+        withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
+        sh 'mvn -B -DskipTests clean package'
+        }
+  }
+  stage('Test') {
+      withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
+      sh 'mvn test'
+      sh 'ls -la'
+      stash includes: 'target/*.jar', name: 'artiApp'
+      }
+  }
+}
+node('dockerslaveTF'){
+    tool name: 'tool_docker'
+    stage('test install') {
+        withEnv(["PATH=${env.PATH}:${tool 'tool_docker'}/bin"]){
+        sh 'docker -v'
+        }
+    } 
+    stage('unstash for deploy') {
+        unstash 'artiApp'
+        // withEnv(["PATH=${env.PATH}:${tool 'tool_docker'}/bin"]){
+        // sh 'docker -v'
+        // }
+        sh 'ls -la'
+    }    
 }
