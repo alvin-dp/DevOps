@@ -1,0 +1,103 @@
+def appversion="1.0-SNAPSHOT"
+def appname="my-app"
+def regestryname = "alvindpdevops/mavenappdocker"
+podTemplate(cloud: 'kubernetes', containers: [
+    containerTemplate(
+        name: 'jnlp',
+        image: 'alvindpdevops/devops_curse:jslave_terraform',
+        ttyEnabled: true,
+        privileged: false,
+        alwaysPullImage: false,
+        workingDir: '/home/jenkins/agent',
+        resourceRequestCpu: '400m',
+        resourceLimitCpu: '400m',
+        resourceRequestMemory: '512Mi',
+        resourceLimitMemory: '512Mi',
+        envVars: [
+            envVar(key: 'JENKINS_URL', value: 'http://jenkins.jenkins.svc.cluster.local:8080'),
+            envVar(key: 'DOCKER_HOST', value: 'tcp://localhost:2375'),
+        ]
+    ),
+    containerTemplate(
+            name: 'docker-daemon',
+            image: 'docker:17.05.0-ce-dind',
+            ttyEnabled: true,
+            privileged: true,
+            alwaysPullImage: false,            
+            workingDir: '/home/jenkins/agent',
+            envVars: [
+                envVar(key: 'DOCKER_TLS_CERTDIR', value: ''),
+            ]
+        ),    
+]
+)
+{
+node(POD_LABEL){
+    tool name: 'maven', type: 'maven'
+    stage('test install maven') {
+        withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
+            sh 'env | grep PATH'
+            sh 'mvn -v'
+    }
+    }
+    stage('Get app from Repo') {
+            git credentialsId: 'git_devops', url: 'git@github.com:alvin-dp/simple-java-maven-app.git'
+    }
+    stage('list WorkDir') {
+            sh 'ls -la'
+    }                         
+    stage('Build') {
+        withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
+        sh 'mvn -B -DskipTests clean package'
+        }
+    }
+  stage('Test') {
+      withEnv(["PATH=${env.PATH}:${tool 'maven'}/bin"]){
+      sh 'mvn test'
+      sh 'ls -la'
+      stash includes: 'target/*.jar', name: 'artiApp'
+      }
+  }
+}
+node(POD_LABEL){
+        tool name: 'tool_docker'
+        stage('test install docker') {
+            withEnv(["PATH=${env.PATH}:${tool 'tool_docker'}/bin"]){
+            sh 'docker -v'
+            }
+        }
+        stage('test dind image') {
+            container('docker-daemon') {
+                sh 'env'
+             } 
+        }
+        
+        stage('test connect to Docker host') {    
+             withEnv(["PATH=${env.PATH}:${tool 'tool_docker'}/bin"]){
+                 sh 'docker ps -a'
+             } 
+        }
+        stage('Get Dockerfile from Repo') {
+                git credentialsId: 'git_devops', url: 'git@github.com:alvin-dp/MavenDocker.git'
+        }
+        stage('unstash for deploy') {
+            unstash 'artiApp'
+            sh 'ls -la target/'        
+            sh 'cat Dockerfile'
+        } 
+        stage('Build Docker'){
+            withEnv(["PATH=${env.PATH}:${tool name: 'tool_docker'}/bin"]){        
+                sh "docker build --no-cache --build-arg APP_NAME=${appname} --build-arg APP_VERSION=${appversion} -t ${regestryname} ."
+            }
+    
+        }
+        stage('Upload to Docker hub'){
+            withEnv(["PATH=${env.PATH}:${tool name: 'tool_docker'}/bin"]){   
+                withDockerRegistry(credentialsId: 'docker_hub_creds', toolName: 'tool_docker') {
+                            sh "docker push ${regestryname}"
+                        }
+            }
+        }
+        
+    }
+}
